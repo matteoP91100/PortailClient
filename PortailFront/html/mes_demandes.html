@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mes demandes</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+
+  <body>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <div>
+          <h1>Mes demandes</h1>
+          <p>Historique des demandes d'intervention</p>
+        </div>
+
+        <button
+          class="btn-secondary"
+          onclick="location.href = 'dashboard.html'"
+        >
+          Retour
+        </button>
+      </div>
+
+      <div id="list-demandes"></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/demandes.js"></script>
+
+    <script>
+      loadDemandes();
+    </script>
+  </body>
+</html>

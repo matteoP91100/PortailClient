@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Portail Client Prorel</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+
+  <body>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <div>
+          <h1>Portail Client Prorel</h1>
+          <p>Bienvenue dans votre espace client</p>
+        </div>
+
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
+
+      <div class="cards">
+        <div class="card" onclick="location.href = 'new_demande.html'">
+          <div class="card-icon">📩</div>
+
+          <h2>Nouvelle demande</h2>
+
+          <p>
+            Créer une nouvelle demande d'intervention et la transmettre à
+            Prorel.
+          </p>
+        </div>
+
+        <div class="card" onclick="location.href = 'mes_demandes.html'">
+          <div class="card-icon">📋</div>
+
+          <h2>Mes demandes</h2>
+
+          <p>Consulter l'ensemble de vos demandes et suivre leur statut.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      }
+    </script>
+
+  </body>
+</html>

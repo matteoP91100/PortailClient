@@ -5,7 +5,6 @@ const demandeController = require("../controllers/demandeController");
 const verifyToken = require("../middleware/authMiddleware");
 
 router.post("/", verifyToken, demandeController.createDemande);
-router.get("/me", verifyToken, demandeController.getMyDemandes);
-router.get("/", verifyToken, demandeController.getAllDemandes);
+router.get("/", verifyToken, demandeController.getDemandes);
 
 module.exports = router;

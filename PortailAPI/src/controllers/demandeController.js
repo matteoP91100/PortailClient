@@ -1,11 +1,19 @@
 const Demande = require("../models/demandeModel");
 
+
+// =======================
 // CREATE DEMANDE
+// =======================
 exports.createDemande = (req, res) => {
 
     const { objet, description } = req.body;
-
     const userId = req.user.id;
+
+    if (!objet || !description) {
+        return res.status(400).json({
+            message: "Objet et description requis"
+        });
+    }
 
     Demande.create(
         {
@@ -14,49 +22,65 @@ exports.createDemande = (req, res) => {
             statut: "en_attente",
             user_id: userId
         },
-        (err) => {
+        (err, result) => {
 
             if (err) {
-                return res.status(500).json({ error: err.message });
+                return res.status(500).json({
+                    message: "Erreur serveur"
+                });
             }
 
-            res.status(201).json({
-                message: "Demande créée"
+            return res.status(201).json({
+                message: "Demande créée",
+                id: result?.insertId
             });
         }
     );
 };
 
 
-// GET USER DEMANDES
-exports.getMyDemandes = (req, res) => {
+// =======================
+// GET DEMANDES (ADMIN + CLIENT)
+// =======================
+exports.getDemandes = (req, res) => {
 
-    const userId = req.user.id;
+    const user = req.user;
 
-    Demande.findByUser(userId, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-
-        res.json(results);
-    });
-};
-
-
-// GET ALL (ADMIN)
-exports.getAllDemandes = (req, res) => {
-
-    if (req.user.role !== "admin") {
-        return res.status(403).json({ message: "Accès refusé" });
+    if (!user) {
+        return res.status(401).json({
+            message: "Non authentifié"
+        });
     }
 
-    Demande.findAll((err, results) => {
+    // =========================
+    // CAS ADMIN → TOUTES LES DEMANDES
+    // =========================
+    if (user.role === "admin") {
+
+        return Demande.findAll((err, results) => {
+
+            if (err) {
+                return res.status(500).json({
+                    message: "Erreur serveur"
+                });
+            }
+
+            return res.status(200).json(results);
+        });
+    }
+
+
+    // =========================
+    // CAS CLIENT → SES DEMANDES
+    // =========================
+    Demande.findByUser(user.id, (err, results) => {
 
         if (err) {
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({
+                message: "Erreur serveur"
+            });
         }
 
-        res.json(results);
+        return res.status(200).json(results);
     });
 };
