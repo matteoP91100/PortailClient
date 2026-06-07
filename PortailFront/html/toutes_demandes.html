@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Toutes les demandes</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <div>
+          <h1>Toutes les demandes</h1>
+          <p>Vue administrateur</p>
+        </div>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filters">
+        <input type="text" id="filter-societe" placeholder="Société" />
+        <input type="date" id="filter-date" />
+        <select id="filter-statut">
+          <option value="">Tous les statuts</option>
+          <option value="en_attente">En attente</option>
+          <option value="en_cours">En cours</option>
+          <option value="résolu">Résolu</option>
+        </select>
+        <button class="btn-login" onclick="loadToutesDemandes()">
+          Filtrer
+        </button>
+        <button class="btn-secondary" onclick="resetFiltres()">
+          Réinitialiser
+        </button>
+      </div>
+
+      <div id="list-demandes"></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/demandes.js"></script>
+    <script>
+      if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      }
+
+      function resetFiltres() {
+        document.getElementById("filter-societe").value = "";
+        document.getElementById("filter-date").value = "";
+        document.getElementById("filter-statut").value = "";
+        loadToutesDemandes();
+      }
+
+      loadToutesDemandes();
+    </script>
+  </body>
+</html>

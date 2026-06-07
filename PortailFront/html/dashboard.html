@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../css/style.css" />
   </head>
 
-  <body>
+  <body class="centered">
     <div class="dashboard-container">
       <div class="dashboard-header">
         <div>
@@ -40,16 +40,24 @@
       </div>
     </div>
 
-    <script>
-      if (!localStorage.getItem("token")) {
+<script>
+    if (!localStorage.getItem("token")) {
         window.location.href = "login.html";
-      }
+    }
 
-      function logout() {
+    // Décode le token pour lire le role
+    const token = localStorage.getItem("token");
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    if (payload.role === "admin") {
+        // Redirige directement vers toutes les demandes
+        window.location.href = "toutes_demandes.html";
+    }
+
+    function logout() {
         localStorage.removeItem("token");
         window.location.href = "login.html";
-      }
-    </script>
-
+    }
+</script>
   </body>
 </html>
